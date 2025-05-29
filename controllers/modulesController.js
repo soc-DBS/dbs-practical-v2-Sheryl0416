@@ -96,6 +96,24 @@ module.exports.updateByCode = function (req, res) {
         });
 }
 
+
+module.exports.updateByCode = function (req, res) {
+  const code = req.params.code;
+  const credit = req.body.credit;
+
+  return modulesModel
+    .updateByCode(code, credit)
+    .then(() => {
+      console.log('update ok!');
+      return res.status(200).json({ msg: "updated!" });
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.status(500).json({ error: error.message });
+    });
+};
+
+
 module.exports.retrieveAll = function (req, res) {
     // get all modules
     return modulesModel
