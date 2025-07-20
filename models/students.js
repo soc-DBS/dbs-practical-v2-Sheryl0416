@@ -1,11 +1,20 @@
 const { query } = require('../database');
 const { SQL_ERROR_CODE, UNIQUE_VIOLATION_ERROR, RAISE_EXCEPTION } = require('../errors');
 
+// module.exports.retrieveAll = function retrieveAll() {
+//     const sql = `SELECT adm_no, stud_name, gender, crse_code FROM student`;
+//     return query(sql).then(function (result) {
+//         return result.rows;
+//     });
+// };
+
 module.exports.retrieveAll = function retrieveAll() {
-    const sql = `SELECT adm_no, stud_name, gender, crse_code FROM student`;
-    return query(sql).then(function (result) {
-        return result.rows;
-    });
+// retrieve students via stored procedure
+const sql = `SELECT adm_no, stud_name, gender, crse_code, gpa, gpa_last_updated
+FROM student`;
+return query(sql).then(function (result) {
+return result.rows;
+});
 };
 
 module.exports.enrolNewStudent = function enrolNewStudent(adminNumber, studentName, gender, address, dob, nationality, courseCode) {
@@ -23,4 +32,14 @@ module.exports.enrolNewStudent = function enrolNewStudent(adminNumber, studentNa
             }
             throw error;
         });
+};
+
+module.exports.calculateStudentGPA = function calculateStudentGPA() {
+  return query('CALL calculate_student_gpa()')
+    .then(() => {
+      console.log('Student GPA calculation done');
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
