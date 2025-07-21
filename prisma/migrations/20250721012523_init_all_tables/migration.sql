@@ -85,3 +85,54 @@ CREATE TABLE "user_role" (
     CONSTRAINT "user_role_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "module" (
+    "mod_code" VARCHAR(10) NOT NULL,
+    "mod_name" VARCHAR(100) NOT NULL,
+    "credit_unit" INTEGER NOT NULL,
+    "mod_coord" CHAR(4),
+
+    CONSTRAINT "module_pkey" PRIMARY KEY ("mod_code")
+);
+
+-- CreateTable
+CREATE TABLE "staff_dependent" (
+    "staff_no" CHAR(4) NOT NULL,
+    "dep_name" VARCHAR(100) NOT NULL,
+    "relationship" VARCHAR(20) NOT NULL,
+    "birth_date" DATE NOT NULL,
+
+    CONSTRAINT "staff_dependent_pkey" PRIMARY KEY ("staff_no","dep_name")
+);
+
+-- CreateTable
+CREATE TABLE "student" (
+    "student_no" CHAR(6) NOT NULL,
+    "student_name" VARCHAR(100) NOT NULL,
+    "gender" CHAR(1) NOT NULL,
+    "dob" DATE NOT NULL,
+    "country_id" INTEGER NOT NULL,
+    "course_code" VARCHAR(5) NOT NULL,
+
+    CONSTRAINT "student_pkey" PRIMARY KEY ("student_no")
+);
+
+-- CreateTable
+CREATE TABLE "country" (
+    "id" INTEGER NOT NULL,
+    "name" VARCHAR(50) NOT NULL,
+
+    CONSTRAINT "country_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "course" ADD CONSTRAINT "fk_course_offered_by" FOREIGN KEY ("offered_by") REFERENCES "department"("dept_code") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "staff" ADD CONSTRAINT "staff_dept_code_fkey" FOREIGN KEY ("dept_code") REFERENCES "department"("dept_code") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "student" ADD CONSTRAINT "student_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "student" ADD CONSTRAINT "student_course_code_fkey" FOREIGN KEY ("course_code") REFERENCES "course"("crse_code") ON DELETE RESTRICT ON UPDATE CASCADE;
